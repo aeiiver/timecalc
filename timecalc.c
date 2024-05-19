@@ -44,6 +44,11 @@ static int parse_date(char *src, struct operand *dst)
     struct tm t = {0};
 
     char *after_date = strptime(src, "%Y-%m-%d", &t);
+    if (after_date == 0) {
+        t.tm_year = today.tm_year;
+        t.tm_mon = today.tm_mon;
+        t.tm_mday = today.tm_mday;
+    }
     char *after_time = strptime(after_date ? after_date : src, "%H:%M:%S", &t);
     if (after_date == 0 && after_time == 0)
         return -1;
